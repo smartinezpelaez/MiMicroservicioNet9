@@ -1,0 +1,59 @@
+# Archivos de compilación
+bin/
+obj/
+out/
+publish/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos temporales
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+
+# Archivos del entorno local de VS y VS Code
+.vs/
+.vscode/
+.idea/
+*.dbmdl
+
+# Configuración del sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Archivos de backup
+*.bak
+*.backup
+*.old
+
+# Secretos locales
+appsettings.Development.json
+secrets.json
+.env
+
+# Archivos de paquetes NuGet y caches
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+.nuget/
+project.lock.json
+
+# Archivos de usuario
+*.DS_Store
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Otros
+*.PublishSettings
+*.pubxml
+*.publishproj
