@@ -98,6 +98,11 @@ Actualiza tu cadena de conexión en appsettings.json o en variables de entorno:
   "DatabaseName": "MiMicroservicioDB"
 }
 
+## Automatizacion del flujo de trabajo con Git actions y LogicApps
+
+- Se crea flijo de trabajo para pruebas automatizadas con Logicapps y GitActions
+
+
 ## 🧩 Estructura de carpetas recomendada
 
 MiMicroservicio.Api/
