@@ -1,8 +1,15 @@
 using MiMicroservicio.Infrastructure.Data;
 using MiMicroservicio.Infrastructure.Repositories;
 using MiMicroservicio.Core.Interfaces;
+using Microsoft.ApplicationInsights.Extensibility;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// --- Application Insights (simple) ---
+//builder.Services.AddApplicationInsightsTelemetry();
+// Si quieres forzar la connection string desde configuración:
+ builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["ApplicationInsights:ConnectionString"]);
+
 
 // Configurar MongoSettings
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("MongoSettings"));
