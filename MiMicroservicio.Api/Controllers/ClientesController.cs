@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiMicroservicio.Core.Interfaces;
 using MiMicroservicio.Core.Models;
@@ -14,10 +16,13 @@ public class ClientesController : ControllerBase
     }
 
     // GET: api/clientes
+    // Permitir a todos los roles autenticados ver clientes
+    //[Authorize(Roles = "Admin,Supervisor,Invitado")]
     [HttpGet]
     public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
 
     // GET: api/clientes/{id}
+    [Authorize(Roles = "Admin,Supervisor,Invitado")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
@@ -27,6 +32,8 @@ public class ClientesController : ControllerBase
     }
 
     // POST: api/clientes
+    // Solo Admin puede crear
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Cliente cliente)
     {
@@ -36,6 +43,8 @@ public class ClientesController : ControllerBase
     }
 
     // PUT: api/clientes/{id}
+    // Solo Admin puede crear
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, [FromBody] Cliente cliente)
     {
@@ -48,6 +57,8 @@ public class ClientesController : ControllerBase
     }
 
     // DELETE: api/clientes/{id}
+    // Solo Admin puede eliminar
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
@@ -57,5 +68,12 @@ public class ClientesController : ControllerBase
         return NoContent();
     }
 
-
+    [Authorize]
+    [HttpGet("perfil")]
+    public IActionResult GetPerfil()
+    {
+        var username = User.Identity?.Name;
+        var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+        return Ok(new { username, role });
+    }
 }
