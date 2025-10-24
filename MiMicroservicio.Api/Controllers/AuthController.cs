@@ -1,7 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
-using MiMicroservicio.Core.Interfaces;
-using MiMicroservicio.Core.Models;
+using MiMicroservicio.Infrastructure.Services;
 
 namespace MiMicroservicio.Api.Controllers
 {
@@ -9,40 +7,31 @@ namespace MiMicroservicio.Api.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        private readonly AuthService _authService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(AuthService authService)
         {
             _authService = authService;
         }
 
-       [HttpPost("login")]
-        public IActionResult Login([FromBody] Usuario usuario)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var token = _authService.Autenticar(usuario);
+            var token = await _authService.LoginAsync(request.Username, request.Password);
             if (token == null)
-                return Unauthorized("Credenciales inválidas");
+                return Unauthorized(new { message = "Credenciales inválidas" });
 
-            var handler = new JwtSecurityTokenHandler();
-            var jwt = handler.ReadJwtToken(token);
-
-            var claims = jwt.Claims.Select(c => new { c.Type, c.Value });
-
-            return Ok(new
-            {
-                token,
-                rol = usuario.Rol,
-                claims
-            });
+            return Ok(new { token });
         }
-       
-       
-       
 
-       
-       
-
-       
-       
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            await _authService.RegistrarAsync(request.Username, request.Password, request.Role);
+            return Ok(new { message = "Usuario creado exitosamente" });
+        }
     }
+
+    public record LoginRequest(string Username, string Password);
+    public record RegisterRequest(string Username, string Password, string Role);
 }

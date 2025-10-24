@@ -17,9 +17,7 @@ public class Cliente
     public decimal Saldo { get; set; }
 }
 
-public class Usuario
-{
-        public string Username { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public string Rol { get; set; } = "Invitado"; // o "Admin"
-}
+
+
+
+

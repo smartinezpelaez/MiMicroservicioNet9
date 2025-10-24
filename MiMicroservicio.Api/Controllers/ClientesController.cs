@@ -15,14 +15,13 @@ public class ClientesController : ControllerBase
         _repo = repo;
     }
 
-    // GET: api/clientes
-    // Permitir a todos los roles autenticados ver clientes
-    //[Authorize(Roles = "Admin,Supervisor,Invitado")]
+    // GET: api/clientes   
+    [Authorize(Roles = "Admin,Supervisor,User")]
     [HttpGet]
     public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
 
     // GET: api/clientes/{id}
-    [Authorize(Roles = "Admin,Supervisor,Invitado")]
+    [Authorize(Roles = "Admin,Supervisor")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(string id)
     {
@@ -31,8 +30,7 @@ public class ClientesController : ControllerBase
         return Ok(c);
     }
 
-    // POST: api/clientes
-    // Solo Admin puede crear
+    // POST: api/clientes    
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Cliente cliente)
@@ -42,9 +40,8 @@ public class ClientesController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = cliente.Id }, cliente);
     }
 
-    // PUT: api/clientes/{id}
-    // Solo Admin puede crear
-    [Authorize(Roles = "Admin")]
+    // PUT: api/clientes/{id}    
+    [Authorize(Roles = "Admin,Supervisor")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, [FromBody] Cliente cliente)
     {
@@ -56,9 +53,8 @@ public class ClientesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/clientes/{id}
-    // Solo Admin puede eliminar
-    [Authorize(Roles = "Admin")]
+    // DELETE: api/clientes/{id}  
+    [Authorize(Roles = "Admin,Supervisor")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
